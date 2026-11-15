@@ -1,4 +1,5 @@
-"""Places the points and traces the course of each channel on the MakeHuman base mesh (right side, -x).
+"""Places the points and traces the course of each channel and vessel on the MakeHuman base mesh (right side, -x).
+Arm channels are defined here; legs_points.py and legs_routes.py add the leg channels, CV and GV.
 Writes build/data.json: {pts:{id:[pos,normal]}, chans:{CH:[{style,pts}]}} in mesh units (decimetres)."""
 import sys,json,os,numpy as np
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
@@ -115,6 +116,7 @@ put_out('TB23',[-0.5,7.52,1.15],[-0.6,0.1,0.8],back=1.5)
 # internal landmarks (inside the body)
 IN={'heart':A([0.12,4.25,0.45]),'lung':A([-0.55,4.5,0.35]),'throat':A([0,6.0,0.25]),'navel':A([0,2.55,0.6]),'stomach':A([0,3.25,0.65]),
     'chest':A([0,4.3,0.5]),'eye':A([-0.3,7.28,0.95]),'cv12':P['CV12'][0]-A([0,0,0.35])}
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'legs_points.py')).read())
 # ---------- tracing ----------
 def wp_ray(o,d): h=b.ray(o,d); assert h is not None; return (h[0],h[1])
 def wp_out(t,d,back=3): d=n(d); h=b.ray(A(t,float)+d*back,-d); assert h is not None; return (h[0],h[1])
@@ -167,6 +169,7 @@ CH['TB']=[('surface',trace(seq('TB1')+[wp_ray(lerp(*finger(4)[1],0.5),mix((-seg_
   ('surface',trace(seq('ST12','TB16','TB17','TB18','TB19','TB20'),lift=0.25)),
   ('connect',trace(seq('TB17')+[wp_out([-0.7,7.0,0.62],[-1,0,0.15],back=1.0)]+seq('TB21'),lift=0.2)),
   ('surface',trace(seq('TB21','TB22')+[wp_out([-0.55,7.45,0.98],[-0.85,0.1,0.5],back=1.2)]+seq('TB23'),lift=0.2))]
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'legs_routes.py')).read())
 os.makedirs(os.path.join(os.path.dirname(os.path.abspath(__file__)),'build'),exist_ok=True)
 json.dump({'pts':{k:[v[0].tolist(),v[1].tolist()] for k,v in P.items()},
            'chans':{c:[{'style':s,'pts':np.asarray(p).tolist()} for s,p in segs] for c,segs in CH.items()}},open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'build','data.json'),'w'))

@@ -7,7 +7,7 @@ Rotatable 3D models of the right arm and right leg showing the five shu points (
 | `index.html` | Landing page | |
 | `arm.html` | LU, LI, HT, PC, SI, TB | 30 |
 | `leg.html` | ST, SP, BL, KI, GB, LR | 30 |
-| `channels.html` | Full courses on a human figure: LU, LI (Metal) and HT, SI, PC, TB (Fire). Open a channel directly with `#LU`, `#LI`, `#HT`, `#SI`, `#PC` or `#TB` | 91 |
+| `channels.html` | Full courses on a human figure of all twelve channels and the Conception (CV) and Governor (GV) Vessels, grouped by element. Open one directly with its code, for example `#LU`, `#ST`, `#BL` or `#GV` | 361 |
 | `li-channel.html` | Redirects to `channels.html#LI` | |
 
 Each page is a single self-contained HTML file. Open it in a browser, or serve the folder (`python3 -m http.server`) so the Arm/Leg switch moves between pages. The only network requests are three.js r128 from cdnjs and the fonts from Google Fonts.

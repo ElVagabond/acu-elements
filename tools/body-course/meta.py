@@ -71,7 +71,10 @@ KIND={'Jing-Well':'well','Ying-Spring':'spring','Shu-Stream':'stream','Jing-Rive
 def build(li_points,atlas_json):
     out={p['id']:p for p in li_points}            # LI text as written for the LI page
     atlas={p['code']:p for p in json.load(open(atlas_json))['points']} if atlas_json and os.path.exists(atlas_json) else {}
-    for ch,count in [('LU',11),('HT',9),('PC',9),('SI',19),('TB',23)]:
+    import legs_meta
+    OTHER.update({k:(v[0],v[2],v[3],v[4]) for k,v in legs_meta.LEG.items()}); HAN.update({k:v[1] for k,v in legs_meta.LEG.items()}); HAN.update(legs_meta.SHU_HAN)
+    SHU_ROLE.update({k:v for k,v in legs_meta.SHU_ROLE_LEG.items() if v})
+    for ch,count in [('LU',11),('HT',9),('PC',9),('SI',19),('TB',23),('ST',45),('SP',21),('KI',27),('LR',14),('GB',44),('BL',67),('CV',24),('GV',28)]:
         for i in range(1,count+1):
             k=f'{ch}{i}'; d={'id':k,'ch':ch,'han':HAN[k]}
             if k in OTHER:
@@ -81,5 +84,6 @@ def build(li_points,atlas_json):
                 a=atlas[k]; d.update(py=a['py'],en=a['en'],loc=a['loc'],shu=KIND[a['shu']],el=a['elem'].lower())
                 if k in SHU_ROLE: d['role']=SHU_ROLE[k]
             out[k]=d
-    for k,(py,hz,en,role,loc) in REFS.items(): out[k]={'id':k,'ch':k[:2],'py':py,'han':hz,'en':en,'role':role,'loc':loc}
+    for k,(py,hz,en,role,loc) in REFS.items():
+        if k not in out: out[k]={'id':k,'ch':k[:2],'py':py,'han':hz,'en':en,'role':role,'loc':loc}
     return out
