@@ -1,6 +1,6 @@
-# Channel course on a full body
+# Channel courses on a full body
 
-Builds `li-channel.html`: the Large Intestine channel (LI1 to LI20) on the MakeHuman base mesh.
+Builds `channels.html`: the courses of the Lung, Large Intestine, Heart, Small Intestine, Pericardium and Triple Burner channels on the MakeHuman base mesh. Each channel opens at `channels.html#LU`, `#LI`, `#HT`, `#SI`, `#PC` or `#TB`.
 
 1. Get the MakeHuman data (the base mesh and rig are CC0):
    ```
@@ -10,12 +10,23 @@ Builds `li-channel.html`: the Large Intestine channel (LI1 to LI20) on the MakeH
    ```
 2. From this folder, with numpy installed:
    ```
-   mkdir -p build && python3 points.py && python3 paths.py && python3 gen_li.py
+   python3 channels.py && python3 gen_channels.py
    ```
 
-- `mhbody.py` loads the body group of the base mesh and the skeleton joints, and casts rays against the mesh.
-- `points.py` places each point by casting a ray from a joint (or from outside the face) to the skin, using cun measured from the joints: 12 cun from elbow to wrist, 9 cun from the armpit fold to the elbow.
-- `paths.py` traces the course between points over the skin. Solid segments are on the surface; `connect` and `cheek` are drawn dashed as the connecting course.
-- `gen_li.py` writes the page from `li_template.html`, reusing the stylesheet of `arm.html`.
+| File | What it does |
+|---|---|
+| `mhbody.py` | Loads the body of the base mesh and its skeleton joints; casts rays against the mesh. |
+| `channels.py` | Places every point and traces every course. Writes `build/data.json`. |
+| `meta.py` | Point names, categories and locations. |
+| `courses.json` | The course description for each channel. |
+| `li_points.json`, `shu_points.json` | LI point text, and five-shu point text from the Shu Atlas data. |
+| `gen_channels.py` | Writes `channels.html` from `channels_template.html`, using the stylesheet of `arm.html`. |
+
+How points are placed: each point starts inside the limb, at a skeleton joint or along a bone, and a ray finds the skin in a set direction (thumb side, back of the hand, crease side of the elbow, and so on). Face, ear and chest points are found by casting from outside the skin inward. Distances use cun measured on the figure: 12 cun from elbow to wrist, 9 cun from the armpit fold to the elbow, and 4 cun from the midline to the nipple.
+
+Each course is a list of segments:
+- `surface`: the channel on the skin. It is traced between points by casting back onto the skin.
+- `connect`: a connecting branch on the skin, drawn dashed.
+- `internal`: the internal course, drawn dotted through the body.
 
 The figure's right side is at negative x, it faces +z, and units are decimetres (scaled to centimetres in the page).

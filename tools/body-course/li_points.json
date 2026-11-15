@@ -1,0 +1,178 @@
+[
+{
+"id": "LI1",
+"ch": "LI",
+"py": "Shangyang",
+"han": "商陽",
+"en": "Shang Yang",
+"loc": "On the radial side of the index finger, about 0.1 cun from the corner of the nail.",
+"shu": "well",
+"el": "metal"
+},
+{
+"id": "LI2",
+"ch": "LI",
+"py": "Erjian",
+"han": "二間",
+"en": "Second Space",
+"loc": "On the radial side of the index finger, in the hollow just distal to the second knuckle, where the red and white skin meet.",
+"shu": "spring",
+"el": "water"
+},
+{
+"id": "LI3",
+"ch": "LI",
+"py": "Sanjian",
+"han": "三間",
+"en": "Third Space",
+"loc": "On the radial side of the hand, in the hollow just proximal to the head of the second metacarpal.",
+"shu": "stream",
+"el": "wood"
+},
+{
+"id": "LI4",
+"ch": "LI",
+"py": "Hegu",
+"han": "合谷",
+"en": "Union Valley",
+"loc": "On the back of the hand, between the first and second metacarpals, level with the middle of the second metacarpal on its radial side.",
+"role": "Yuan-source"
+},
+{
+"id": "LI5",
+"ch": "LI",
+"py": "Yangxi",
+"han": "陽谿",
+"en": "Yang Stream",
+"loc": "On the radial side of the wrist, in the anatomical snuffbox between the tendons of extensor pollicis longus and brevis.",
+"shu": "river",
+"el": "fire"
+},
+{
+"id": "LI6",
+"ch": "LI",
+"py": "Pianli",
+"han": "偏歷",
+"en": "Veering Passage",
+"loc": "On the line from LI5 to LI11, 3 cun above the wrist crease.",
+"role": "Luo-connecting"
+},
+{
+"id": "LI7",
+"ch": "LI",
+"py": "Wenliu",
+"han": "溫溜",
+"en": "Warm Flow",
+"loc": "On the line from LI5 to LI11, 5 cun above the wrist crease.",
+"role": "Xi-cleft"
+},
+{
+"id": "LI8",
+"ch": "LI",
+"py": "Xialian",
+"han": "下廉",
+"en": "Lower Ridge",
+"loc": "On the line from LI5 to LI11, 4 cun below LI11."
+},
+{
+"id": "LI9",
+"ch": "LI",
+"py": "Shanglian",
+"han": "上廉",
+"en": "Upper Ridge",
+"loc": "On the line from LI5 to LI11, 3 cun below LI11."
+},
+{
+"id": "LI10",
+"ch": "LI",
+"py": "Shousanli",
+"han": "手三里",
+"en": "Arm Three Li",
+"loc": "On the line from LI5 to LI11, 2 cun below LI11."
+},
+{
+"id": "LI11",
+"ch": "LI",
+"py": "Quchi",
+"han": "曲池",
+"en": "Pool at the Bend",
+"loc": "With the elbow bent, at the outer end of the elbow crease, midway between LU5 and the lateral epicondyle of the humerus.",
+"shu": "sea",
+"el": "earth"
+},
+{
+"id": "LI12",
+"ch": "LI",
+"py": "Zhouliao",
+"han": "肘髎",
+"en": "Elbow Bone-Hole",
+"loc": "With the elbow bent, 1 cun above and outside LI11, on the edge of the humerus."
+},
+{
+"id": "LI13",
+"ch": "LI",
+"py": "Shouwuli",
+"han": "手五里",
+"en": "Arm Five Li",
+"loc": "On the line from LI11 to LI15, 3 cun above LI11."
+},
+{
+"id": "LI14",
+"ch": "LI",
+"py": "Binao",
+"han": "臂臑",
+"en": "Upper Arm",
+"loc": "At the lower end of the deltoid, on the line from LI11 to LI15, 7 cun above LI11."
+},
+{
+"id": "LI15",
+"ch": "LI",
+"py": "Jianyu",
+"han": "肩髃",
+"en": "Shoulder Bone",
+"loc": "In front of and below the acromion, in the hollow that appears when the arm is raised."
+},
+{
+"id": "LI16",
+"ch": "LI",
+"py": "Jugu",
+"han": "巨骨",
+"en": "Great Bone",
+"loc": "On the top of the shoulder, in the hollow between the outer end of the clavicle and the spine of the scapula."
+},
+{
+"id": "LI17",
+"ch": "LI",
+"py": "Tianding",
+"han": "天鼎",
+"en": "Heaven's Tripod",
+"loc": "On the side of the neck, at the back edge of sternocleidomastoid, 1 cun below LI18."
+},
+{
+"id": "LI18",
+"ch": "LI",
+"py": "Futu",
+"han": "扶突",
+"en": "Support the Prominence",
+"loc": "On the side of the neck, level with the Adam's apple, between the two heads of sternocleidomastoid."
+},
+{
+"id": "LI19",
+"ch": "LI",
+"py": "Kouheliao",
+"han": "口禾髎",
+"en": "Mouth Grain Bone-Hole",
+"loc": "On the upper lip, directly below the outer edge of the nostril, level with GV26. On the opposite side of the face from where the channel starts.",
+"side": "Left (opposite side)"
+},
+{
+"id": "LI20",
+"ch": "LI",
+"py": "Yingxiang",
+"han": "迎香",
+"en": "Welcome Fragrance",
+"loc": "In the groove beside the nose, level with the middle of the outer edge of the nostril. On the opposite side of the face: the channel crosses at GV26.",
+"role": "End point",
+"side": "Left (opposite side)"
+}
+]

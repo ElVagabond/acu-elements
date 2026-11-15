@@ -7,7 +7,8 @@ Rotatable 3D models of the right arm and right leg showing the five shu points (
 | `index.html` | Landing page | |
 | `arm.html` | LU, LI, HT, PC, SI, TB | 30 |
 | `leg.html` | ST, SP, BL, KI, GB, LR | 30 |
-| `li-channel.html` | Large Intestine course on a full body, LI1 to LI20 | 20, plus 4 meeting points |
+| `channels.html` | Full courses on a human figure: LU, LI (Metal) and HT, SI, PC, TB (Fire). Open a channel directly with `#LU`, `#LI`, `#HT`, `#SI`, `#PC` or `#TB` | 91 |
+| `li-channel.html` | Redirects to `channels.html#LI` | |
 
 Each page is a single self-contained HTML file. Open it in a browser, or serve the folder (`python3 -m http.server`) so the Arm/Leg switch moves between pages. The only network requests are three.js r128 from cdnjs and the fonts from Google Fonts.
 
@@ -24,7 +25,7 @@ The limbs are signed distance fields (tapered capsules blended together, plus el
 
 The arm's width profile, from mid upper arm to wrist, was measured from a vector trace of the arm outline in "Points of lung channel" by Dimitrius. The leg's proportions are modelled by hand.
 
-The channel course page uses the [MakeHuman](https://github.com/makehumancommunity/makehuman) base mesh (CC0). Points are placed by casting rays from the skeleton joints to the skin, measured in cun from the joints, and the course is traced over the skin between them. Solid lines are the channel on the surface; dashed lines are the connecting course (LI16 to GV14 to ST12, and the branch from the neck across the cheek to the mouth). The scripts are in `tools/body-course/`.
+The channel course page uses the [MakeHuman](https://github.com/makehumancommunity/makehuman) base mesh (CC0). Points are placed by casting rays from the skeleton joints to the skin, measured in cun from the joints, and the course is traced over the skin between them. Solid lines are the channel on the surface, dashed lines are connecting branches on the skin (for example LI16 to GV14 to ST12), and dotted lines are the internal course, drawn as simple lines seen through the body. The scripts are in `tools/body-course/`.
 
 ## Data
 
@@ -32,7 +33,7 @@ Point names, element assignments and location text come from the Shu Atlas point
 
 ## Credits and licence
 
-The figure in `li-channel.html` is the MakeHuman base mesh, released under CC0 by its copyright holders.
+The figure in `channels.html` is the MakeHuman base mesh, released under CC0 by its copyright holders.
 
 `arm.html` contains an arm outline derived from ["Points of lung channel"](https://commons.wikimedia.org/wiki/File:Points_of_lung_channel.svg) by Dimitrius, Wikimedia Commons, licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The arm model is shared under the same licence.
 

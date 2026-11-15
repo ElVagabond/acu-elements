@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Large Intestine Channel</title>
+<title>Channel Courses</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+TC:wght@500;700&display=swap">
 <style>
@@ -15,22 +15,31 @@
 .dashed{width:22px; height:0; border-top:3px dashed var(--line-int); display:inline-block}
 .ringdot{width:10px; height:10px; border-radius:50%; border:2px solid var(--muted); display:inline-block}
 .dot.plain{background:var(--plain)}
+.picker{display:flex; flex-direction:column; gap:8px}
+.pgroup{display:flex; align-items:center; flex-wrap:wrap; gap:6px}
+.pgroup .gname{font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); min-width:44px}
+.pgroup .gname .han{font-family:var(--f-han); letter-spacing:0; margin-left:4px}
+.chbtn{font:inherit; font-family:var(--f-mono); font-size:13px; padding:5px 11px; border:1px solid var(--line); border-radius:6px; background:var(--surface); color:var(--fg); cursor:pointer; display:inline-flex; align-items:center; gap:6px}
+.chbtn:hover{border-color:var(--accent)}
+.chbtn[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+.chbtn .sw{width:12px; height:3px; border-radius:2px}
+.dotted{width:22px; height:0; border-top:3px dotted var(--line-in); display:inline-block}
 .tag{font-size:11px; font-weight:600; letter-spacing:0.04em; color:var(--accent); background:var(--accent-soft); border-radius:4px; padding:1px 6px}
-:root{--line-li:#0b7f8a; --line-int:#b0702a; --plain:#3a4643}
+:root{--line-li:#0b7f8a; --line-int:#b0702a; --line-in:#8a4fc0; --plain:#3a4643}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --plain:#c9d3cf } }
 :root[data-theme="dark"]{ --plain:#c9d3cf }
 </style>
 </head>
 <body>
 <header>
-  <h1>Large Intestine channel<span class="han">手陽明大腸經</span></h1>
-  <p>Right side, LI1 to LI20 on a full body</p>
-  <nav class="switch" aria-label="Pages"><a href="arm.html">Arm</a><a href="leg.html">Leg</a><a href="li-channel.html" aria-current="page">LI course</a></nav>
+  <h1 id="h1">Channel courses</h1>
+  <p id="sub">Right side, on a full body</p>
+  <nav class="switch" aria-label="Pages"><a href="arm.html">Arm</a><a href="leg.html">Leg</a><a href="channels.html" aria-current="page">Channels</a></nav>
 </header>
 
 <div class="app">
   <div class="stage" id="stage">
-    <canvas id="gl" aria-label="3D human figure showing the course of the Large Intestine channel"></canvas>
+    <canvas id="gl" aria-label="3D human figure showing the course of an acupuncture channel"></canvas>
     <div class="labels" id="labels"></div>
     <div class="status" id="status">Loading the figure…</div>
     <div class="views" role="group" aria-label="Show">
@@ -38,7 +47,7 @@
       <button class="btn" type="button" data-view="side">Right side</button>
       <button class="btn" type="button" data-view="back">Back</button>
       <button class="btn" type="button" data-view="hand">Hand</button>
-      <button class="btn" type="button" data-view="face">Face</button>
+      <button class="btn" type="button" data-view="head" id="v-head">Head</button>
     </div>
     <div class="tools">
       <button class="btn icon" id="spin" type="button" aria-pressed="false" aria-label="Spin the figure" title="Spin the figure">
@@ -52,9 +61,13 @@
   <aside class="rail">
     <section class="detail" id="detail" aria-live="polite"></section>
     <section>
+      <h2>Channel</h2>
+      <div class="picker" id="picker"></div>
+    </section>
+    <section>
       <h2>Show</h2>
       <div class="toggles">
-        <label><input type="checkbox" id="t-int" checked> Connecting course</label>
+        <label><input type="checkbox" id="t-int" checked> Connecting and internal course</label>
         <label><input type="checkbox" id="t-both"> Both sides</label>
         <label><input type="checkbox" id="t-labels" checked> Labels</label>
       </div>
@@ -62,10 +75,11 @@
     <section>
       <h2>Key</h2>
       <ul class="key">
-        <li><span class="solid"></span>Channel on the surface</li>
-        <li><span class="dashed"></span>Connecting course</li>
-        <li><span class="dot plain"></span>LI point</li>
-        <li><span class="ringdot"></span>Meeting point on another channel</li>
+        <li><span class="solid" id="key-solid"></span>Channel on the surface</li>
+        <li><span class="dashed"></span>Connecting branch</li>
+        <li><span class="dotted"></span>Internal course, seen through the body</li>
+        <li><span class="dot plain"></span>Channel point</li>
+        <li><span class="ringdot"></span>Point on another channel</li>
       </ul>
       <ul class="legend" style="margin-top:8px">
         <li><span class="dot wood"></span>Wood 木</li><li><span class="dot fire"></span>Fire 火</li><li><span class="dot earth"></span>Earth 土</li>
@@ -74,17 +88,17 @@
     </section>
     <section>
       <h2>Course</h2>
-      <p class="course">Starts at LI1 beside the index fingernail, runs between the first two metacarpals (LI4) to the wrist (LI5), up the thumb side of the forearm to the outer end of the elbow crease (LI11), up the outer upper arm to the front of the shoulder (LI15) and over it to LI16. It meets the other yang channels at GV14 below the seventh neck vertebra, then turns forward to ST12 above the collarbone, where a branch goes inward to the lung and the large intestine. The surface branch climbs the neck (LI17, LI18), crosses the cheek into the lower gums, circles the upper lip and crosses the midline at GV26, ending at LI20 beside the opposite nostril.</p>
+      <p class="course" id="course"></p>
     </section>
     <section>
-      <h2>Points<span class="han">二十穴</span></h2>
-      <ul class="plist" id="list-LI"></ul>
+      <h2 id="pts-h">Points</h2>
+      <ul class="plist" id="list-CH"></ul>
     </section>
     <section>
-      <h2>Meeting points</h2>
+      <h2>Points on other channels</h2>
       <ul class="plist" id="list-X"></ul>
     </section>
-    <p class="note">Schematic study model. Point positions follow standard textbook descriptions and are approximate on this figure. Figure: MakeHuman base mesh (CC0).</p>
+    <p class="note">Schematic study model. Point positions follow standard textbook descriptions and are approximate on this figure. Internal courses are drawn as simple lines through the body. Figure: MakeHuman base mesh (CC0).</p>
   </aside>
 </div>
 
@@ -95,27 +109,46 @@
 const DATA=/*DATA*/;
 const EL={wood:{name:"Wood",han:"木",hex:0x3f9b4b},fire:{name:"Fire",han:"火",hex:0xd8402f},earth:{name:"Earth",han:"土",hex:0xe0a81c},metal:{name:"Metal",han:"金",hex:0xeef1f3},water:{name:"Water",han:"水",hex:0x2b6fd6}};
 const SHU={well:"Jing-well 井",spring:"Ying-spring 滎",stream:"Shu-stream 輸",river:"Jing-river 經",sea:"He-sea 合"};
-const POINTS=/*POINTS*/;
-const byId={}; POINTS.forEach(p=>byId[p.id]=p);
+const INFO=/*POINTS*/;
+const CH=/*CHANNELS*/;
+const ORDER=Object.keys(CH);
 const $=id=>document.getElementById(id);
 const R=Math.PI/180;
-let selected=null;
+let selected=null, cur=null;
 
 /* ---------- side rail ---------- */
-POINTS.forEach(p=>{
-  const li=document.createElement("li"), b=document.createElement("button");
-  b.type="button"; b.id="btn-"+p.id; b.setAttribute("aria-pressed","false");
-  const dot=p.el?'<span class="dot '+p.el+'"></span>':(p.ch==="LI"?'<span class="dot plain"></span>':'<span class="ringdot"></span>');
-  b.innerHTML=dot+'<span class="code">'+p.id+'</span><span class="nm">'+p.py+'<span class="han">'+p.han+'</span></span><span class="kind">'+(p.shu?SHU[p.shu].split(" ")[0]:(p.role||""))+'</span>';
-  b.addEventListener("click",()=>select(p.id,true));
-  li.appendChild(b); $(p.ch==="LI"?"list-LI":"list-X").appendChild(li);
+const groups={};
+ORDER.forEach(c=>{ (groups[CH[c].group]=groups[CH[c].group]||[]).push(c) });
+Object.entries(groups).forEach(([g,list])=>{
+  const row=document.createElement("div"); row.className="pgroup";
+  row.innerHTML='<span class="gname">'+g+'<span class="han">'+CH[list[0]].ghan+'</span></span>';
+  list.forEach(c=>{
+    const b=document.createElement("button"); b.type="button"; b.className="chbtn"; b.id="ch-"+c; b.setAttribute("aria-pressed","false");
+    b.title=CH[c].name; b.innerHTML='<span class="sw" style="background:'+CH[c].line+'"></span>'+c;
+    b.addEventListener("click",()=>{ if(location.hash!=="#"+c) location.hash=c; else showChannel(c,true) });
+    row.appendChild(b);
+  });
+  $("picker").appendChild(row);
 });
+function fillLists(c){
+  $("list-CH").innerHTML=""; $("list-X").innerHTML="";
+  const add=(id,ref)=>{
+    const p=INFO[id], li=document.createElement("li"), b=document.createElement("button");
+    b.type="button"; b.id="btn-"+id; b.setAttribute("aria-pressed","false");
+    const dot=ref?'<span class="ringdot"></span>':(p.el?'<span class="dot '+p.el+'"></span>':'<span class="dot plain"></span>');
+    b.innerHTML=dot+'<span class="code">'+id+'</span><span class="nm">'+p.py+'<span class="han">'+p.han+'</span></span><span class="kind">'+(p.shu?SHU[p.shu].split(" ")[0]:(ref?(INFO[id].ch===c?"":p.role||""):(p.role||"")))+'</span>';
+    b.addEventListener("click",()=>select(id,true));
+    li.appendChild(b); $(ref?"list-X":"list-CH").appendChild(li);
+  };
+  CH[c].points.forEach(id=>add(id,false)); CH[c].refs.forEach(id=>add(id,true));
+  $("list-X").parentNode.hidden=!CH[c].refs.length;
+}
 function renderDetail(){
   const d=$("detail");
-  if(!selected){ d.innerHTML='<div class="ttl">Pick a point</div><p class="en">Click a point on the figure or in the lists. The five shu points are coloured by element; the other LI points are dark, and the rings mark where the channel meets other channels.</p>'; return }
-  const p=byId[selected], rows=[];
+  if(!selected){ d.innerHTML='<div class="ttl">Pick a point</div><p class="en">Click a point on the figure or in the lists. Five-shu points are coloured by element, the channel\'s other points are dark, and rings mark points on other channels that the course passes through.</p>'; return }
+  const p=INFO[selected], rows=[];
   if(p.shu) rows.push('<dt>Shu type</dt><dd>'+SHU[p.shu]+'</dd>','<dt>Element</dt><dd><span class="dot '+p.el+'"></span>'+EL[p.el].name+' '+EL[p.el].han+'</dd>');
-  if(p.role) rows.push('<dt>'+(p.ch==="LI"?"Category":"Channel")+'</dt><dd><span class="tag">'+p.role+'</span></dd>');
+  if(p.role) rows.push('<dt>'+(CH[p.ch]||p.ch.length===2&&!["GV","CV","ST","GB","BL"].includes(p.ch)?"Category":"Channel")+'</dt><dd><span class="tag">'+p.role+'</span></dd>');
   if(p.side) rows.push('<dt>Side</dt><dd>'+p.side+'</dd>');
   d.innerHTML='<div class="top"><span class="big">'+p.han+'</span><span class="ttl"><span class="code">'+p.id+'</span> '+p.py+'</span><span class="en">'+p.en+'</span></div>'+
     (rows.length?'<dl>'+rows.join("")+'</dl>':'')+'<p>'+p.loc+'</p>';
@@ -140,16 +173,18 @@ const view={az:0,el:0,dist:120,target:new THREE.Vector3()};
 let fly=null;
 const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const P=id=>toV(DATA.pts[id][0]);
+function fitDist(h){ const t=Math.tan(camera.fov*R/2), a=camera.aspect||1; return Math.max(h/2/t,h*0.42/(t*a)) }
+const V3=a=>new THREE.Vector3(a[0],a[1],a[2]);
+function viewOf(v){ return {az:v[0]*R,el:v[1]*R,dist:fitDist(v[2]),target:V3(v[3])} }
 const VIEWS={
-  front:()=>({az:-8*R,el:4*R,dist:fitDist(74),target:new THREE.Vector3(-18,43,5)}),
-  side:()=>({az:-90*R,el:6*R,dist:fitDist(74),target:new THREE.Vector3(-22,43,8)}),
-  back:()=>({az:-160*R,el:8*R,dist:fitDist(62),target:new THREE.Vector3(-16,48,0)}),
-  hand:()=>({az:-62*R,el:12*R,dist:fitDist(22),target:P("LI1").add(P("LI5")).multiplyScalar(0.5)}),
-  face:()=>({az:-28*R,el:4*R,dist:fitDist(17),target:new THREE.Vector3(-2,63,10)})
+  front:()=>viewOf([-8,4,74,[-18,43,5]]),
+  side:()=>viewOf([-90,6,74,[-22,43,8]]),
+  back:()=>viewOf([-165,8,74,[-18,45,-2]]),
+  hand:()=>{const h=CH[cur].hand; return {az:h[0]*R,el:h[1]*R,dist:fitDist(22),target:P(h[3]).add(P(h[2])).multiplyScalar(0.5)}},
+  head:()=>viewOf(CH[cur].head)
 };
 let home=null;
-function fitDist(h){ const t=Math.tan(camera.fov*R/2), a=camera.aspect||1; return Math.max(h/2/t,h*0.42/(t*a)) }
-function homeView(){ return {az:-34*R,el:6*R,dist:fitDist(76),target:new THREE.Vector3(-20,42,6)} }
+function homeView(){ return viewOf(CH[cur].home) }
 function applyView(){
   const ce=Math.cos(view.el);
   camera.position.set(view.target.x+view.dist*ce*Math.sin(view.az),view.target.y+view.dist*Math.sin(view.el),view.target.z+view.dist*ce*Math.cos(view.az));
@@ -166,74 +201,92 @@ function resize(){
 }
 function b64(s,T){ const bin=atob(s), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return new T(u.buffer) }
 
-const markers=[], sides={right:new THREE.Group(), left:new THREE.Group()}, internal=[];
+const markers=[], CHG={}, internal=[], mirrors=[];
 let ring=null;
-function pathTube(pts,radius,mat,dashed,into){
+function pathTube(pts,radius,mat,style,into){
   const v=pts.map(toV);
-  if(!dashed){ into.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(v),v.length*3,radius,6,false),mat)); return }
-  // dashed: cut the polyline into 1.4 cm dashes with 0.9 cm gaps
-  let acc=0, cur=[v[0]], on=true;
+  if(style==="surface"){ into.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(v),v.length*3,radius,6,false),mat)); return }
+  const on=style==="internal"?0.7:1.4, off=style==="internal"?0.7:0.9;
+  let acc=0, cur=[v[0]], draw=true;
+  const flush=()=>{ if(draw&&cur.length>1){ const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cur),6,radius,6,false),mat); m.renderOrder=style==="internal"?5:0; into.add(m) } };
   for(let i=1;i<v.length;i++){
-    let a=v[i-1], b=v[i], seg=a.distanceTo(b), pos=0;
+    const a=v[i-1], b=v[i], seg=a.distanceTo(b); let pos=0;
     while(pos<seg){
-      const lim=on?1.4:0.9, step=Math.min(lim-acc,seg-pos); pos+=step; acc+=step;
-      const p=a.clone().lerp(b,pos/seg);
-      if(on) cur.push(p);
-      if(acc>=lim-1e-6){ if(on&&cur.length>1){ into.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cur),8,radius,6,false),mat)); } on=!on; acc=0; cur=[p]; }
+      const lim=draw?on:off, step=Math.min(lim-acc,seg-pos); pos+=step; acc+=step;
+      const p=a.clone().lerp(b,pos/seg); if(draw) cur.push(p);
+      if(acc>=lim-1e-6){ flush(); draw=!draw; acc=0; cur=[p] }
     }
   }
-  if(on&&cur.length>1) into.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cur),8,radius,6,false),mat));
+  flush();
 }
 function build(){
   const M=DATA.mesh, q=b64(M.q,Int16Array), pos=new Float32Array(q.length);
   for(let i=0;i<q.length;i++) pos[i]=q[i]/M.s;
   const geo=new THREE.BufferGeometry(); geo.setAttribute("position",new THREE.BufferAttribute(pos,3)); geo.setIndex(new THREE.BufferAttribute(b64(M.i,Uint16Array),1)); geo.computeVertexNormals();
   group.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0xd9a184,roughness:0.78,metalness:0})));
-  group.add(sides.right); group.add(sides.left);
-  const surf=new THREE.MeshStandardMaterial({color:0x0b7f8a,roughness:0.55}), intm=new THREE.MeshStandardMaterial({color:0xb0702a,roughness:0.6});
-  const mkSide=(root,mirror)=>{
-    const g=new THREE.Group(); if(mirror) g.scale.x=-1; root.add(g);
-    ["main","neck","lip"].forEach(k=>pathTube(DATA.paths[k],0.16,surf,false,g));
-    const ig=new THREE.Group(); g.add(ig); internal.push(ig);
-    ["connect","cheek"].forEach(k=>pathTube(DATA.paths[k],0.13,intm,true,ig));
-    POINTS.forEach(p=>{
-      const pos=P(p.id), n=toV(DATA.pts[p.id][1]); if(mirror){pos.x*=-1; n.x*=-1}
-      const m=new THREE.Group(); m.position.copy(pos.clone().addScaledVector(n,0.15));
-      const small=p.id==="LI2"||p.id==="LI3"||p.id==="LI1"||p.id==="LI19"||p.id==="LI20";
-      const r=small?0.42:0.55;
-      if(p.ch==="LI"){
-        const col=p.el?EL[p.el].hex:0x2e3936;
-        m.add(new THREE.Mesh(new THREE.SphereGeometry(r*1.25,20,14),new THREE.MeshBasicMaterial({color:0x141a19,side:THREE.BackSide})));
-        m.add(new THREE.Mesh(new THREE.SphereGeometry(r,20,14),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:p.el?0.3:0.05,roughness:0.4})));
-      }else{
-        const t=new THREE.Mesh(new THREE.TorusGeometry(r*0.9,0.14,8,28),new THREE.MeshStandardMaterial({color:0x4b5754,roughness:0.5}));
-        t.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),n); m.add(t);
-      }
-      (mirror?sides.left:g).add(m);
-      if(mirror) return;
-      const el=document.createElement("div"); el.className="lbl"; el.textContent=p.id; labelBox.appendChild(el);
-      markers.push({p:p,g:m,n:n,el:el,small:small,wpos:new THREE.Vector3()});
+  const conn=new THREE.MeshStandardMaterial({color:0xb0702a,roughness:0.6});
+  const inner=new THREE.MeshBasicMaterial({color:0x8a4fc0,transparent:true,opacity:0.7,depthTest:false,depthWrite:false});
+  ORDER.forEach(c=>{
+    const root=new THREE.Group(); group.add(root); CHG[c]={root:root,markers:[]};
+    const surf=new THREE.MeshStandardMaterial({color:new THREE.Color(CH[c].line),roughness:0.55});
+    [false,true].forEach(mirror=>{
+      const g=new THREE.Group(); if(mirror){ g.scale.x=-1; g.visible=false; mirrors.push(g) } root.add(g);
+      DATA.chans[c].forEach(s=>{
+        if(s.style==="surface") pathTube(s.pts,0.16,surf,"surface",g);
+        else{ const ig=new THREE.Group(); g.add(ig); internal.push(ig); pathTube(s.pts,s.style==="internal"?0.12:0.13,s.style==="internal"?inner:conn,s.style,ig) }
+      });
+      CH[c].points.concat(CH[c].refs).forEach(id=>{
+        const p=INFO[id], ref=!CH[c].points.includes(id), pos=P(id), n=toV(DATA.pts[id][1]);
+        const m=new THREE.Group(); m.position.copy(pos.clone().addScaledVector(n,0.15));
+        const small=/^(LI1|LI2|LI3|LI19|LI20|LU10|LU11|HT8|HT9|PC8|PC9|SI1|SI2|SI3|TB1|TB2|TB3|GB1|BL1|GV26|ST4)$/.test(id), r=small?0.42:0.55;
+        if(!ref){
+          const col=p.el?EL[p.el].hex:0x2e3936;
+          m.add(new THREE.Mesh(new THREE.SphereGeometry(r*1.25,20,14),new THREE.MeshBasicMaterial({color:0x141a19,side:THREE.BackSide})));
+          m.add(new THREE.Mesh(new THREE.SphereGeometry(r,20,14),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:p.el?0.3:0.05,roughness:0.4})));
+        }else{
+          const t=new THREE.Mesh(new THREE.TorusGeometry(r*0.9,0.14,8,28),new THREE.MeshStandardMaterial({color:0x4b5754,roughness:0.5}));
+          t.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),n); m.add(t);
+        }
+        g.add(m);
+        if(mirror) return;
+        const el=document.createElement("div"); el.className="lbl"; el.textContent=id; el.hidden=true; labelBox.appendChild(el);
+        const mk={id:id,ch:c,g:m,n:n,el:el,small:small,wpos:new THREE.Vector3()}; markers.push(mk); CHG[c].markers.push(mk);
+      });
     });
-  };
-  mkSide(sides.right,false); mkSide(sides.left,true); sides.left.visible=false;
+  });
   ring=new THREE.Mesh(new THREE.RingGeometry(0.85,1.05,48),new THREE.MeshBasicMaterial({color:0x141a19,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthWrite:false}));
   ring.visible=false; group.add(ring);
-  resize(); home=homeView(); Object.assign(view,{az:home.az,el:home.el,dist:home.dist}); view.target.copy(home.target);
+  resize();
   $("status").hidden=true;
+  route(false);
   requestAnimationFrame(tick);
 }
+function showChannel(c,move){
+  if(!CH[c]) c=ORDER[0];
+  cur=c; selected=null; if(ring) ring.visible=false;
+  ORDER.forEach(k=>{ $("ch-"+k).setAttribute("aria-pressed",String(k===c)); if(CHG[k]) CHG[k].root.visible=(k===c) });
+  markers.forEach(m=>{ m.g.scale.setScalar(1); m.el.classList.remove("on") });
+  $("h1").innerHTML=CH[c].name+' channel<span class="han">'+CH[c].han+'</span>';
+  $("sub").textContent=CH[c].sub; document.title=CH[c].name+" Channel";
+  $("pts-h").innerHTML="Points<span class=\"han\">"+CH[c].points.length+"</span>";
+  $("course").textContent=CH[c].text; $("key-solid").style.background=CH[c].line;
+  fillLists(c); renderDetail(); $("v-head").textContent=CH[c].headLabel;
+  if(markers.length){ home=homeView(); if(move) flyTo(home); else { Object.assign(view,{az:home.az,el:home.el,dist:home.dist}); view.target.copy(home.target) } }
+}
+function route(move){ showChannel(decodeURIComponent(location.hash.slice(1)).toUpperCase(),move) }
+window.addEventListener("hashchange",()=>route(true));
 
 /* ---------- selection ---------- */
 function select(id,move){
   if(move) setSpin(false);
   selected=id; renderDetail();
-  POINTS.forEach(p=>$("btn-"+p.id).setAttribute("aria-pressed",String(p.id===id)));
-  const m=markers.find(k=>k.p.id===id); if(!m) return;
+  document.querySelectorAll(".plist button").forEach(b=>b.setAttribute("aria-pressed",String(b.id==="btn-"+id)));
+  const m=markers.find(k=>k.id===id&&k.ch===cur); if(!m) return;
   markers.forEach(k=>{k.g.scale.setScalar(k===m?1.3:1); k.el.classList.toggle("on",k===m)});
   ring.visible=true; ring.position.copy(m.g.position); ring.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),m.n);
   if(move){
     const wn=m.n.clone(), el=Math.max(-60*R,Math.min(60*R,Math.asin(wn.y)));
-    const near=["LI1","LI2","LI3","LI4","LI5","LI19","LI20","GV26","ST4"].includes(id)?14:24;
+    const near=m.small||/^(LI4|LI5|LU9|HT7|PC7|SI5|SI4|TB4|SI18|SI19|TB2[0-3]|TB1[7-9])$/.test(id)?14:24;
     flyTo({az:Math.atan2(wn.x,wn.z),el:el,dist:fitDist(near),target:m.g.position.clone()});
   }
 }
@@ -243,7 +296,7 @@ const ptrs=new Map(); let moved=0, pinch=0;
 function pickAt(ev){
   const r=canvas.getBoundingClientRect(), x=ev.clientX-r.left, y=ev.clientY-r.top;
   let best=null, bd=22;
-  markers.forEach(m=>{ if(!m.vis) return; const d=Math.hypot(m.sx-x,m.sy-y); if(d<bd){bd=d;best=m} });
+  markers.forEach(m=>{ if(!m.vis||m.ch!==cur) return; const d=Math.hypot(m.sx-x,m.sy-y); if(d<bd){bd=d;best=m} });
   return best;
 }
 canvas.addEventListener("pointerdown",ev=>{
@@ -268,7 +321,7 @@ canvas.addEventListener("pointermove",ev=>{
 function up(ev){
   if(!ptrs.has(ev.pointerId)) return;
   ptrs.delete(ev.pointerId); if(!ptrs.size) canvas.classList.remove("drag");
-  if(ev.type==="pointerup"&&moved<6){const m=pickAt(ev); if(m) select(m.p.id,true)}
+  if(ev.type==="pointerup"&&moved<6){const m=pickAt(ev); if(m) select(m.id,true)}
 }
 canvas.addEventListener("pointerup",up); canvas.addEventListener("pointercancel",up);
 canvas.addEventListener("wheel",ev=>{
@@ -278,7 +331,7 @@ canvas.addEventListener("wheel",ev=>{
 $("reset").addEventListener("click",()=>{ if(home){ home=homeView(); flyTo(home) } });
 document.querySelectorAll(".views [data-view]").forEach(b=>b.addEventListener("click",()=>{ if(home){ setSpin(false); flyTo(VIEWS[b.dataset.view]()) } }));
 $("t-int").addEventListener("change",e=>internal.forEach(g=>g.visible=e.target.checked));
-$("t-both").addEventListener("change",e=>{sides.left.visible=e.target.checked});
+$("t-both").addEventListener("change",e=>mirrors.forEach(g=>g.visible=e.target.checked));
 $("t-labels").addEventListener("change",e=>{labelBox.hidden=!e.target.checked});
 if(window.ResizeObserver) new ResizeObserver(resize).observe(stage); else window.addEventListener("resize",resize);
 
@@ -300,6 +353,7 @@ function tick(now){
   renderer.render(scene,camera);
   const w=stage.clientWidth,h=stage.clientHeight;
   markers.forEach(m=>{
+    if(m.ch!==cur){ m.el.hidden=true; return }
     m.wpos.copy(m.g.position);
     const facing=m.n.dot(tmp.copy(camera.position).sub(m.wpos).normalize());
     tmp.copy(m.wpos).project(camera);
