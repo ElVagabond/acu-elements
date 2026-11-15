@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Five Shu Points</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+TC:wght@500;700&display=swap">
+<style>
+/* Layout: one centred column, a short intro, then one card per body region. */
+:root{
+  --bg:#eef1ef; --surface:#f8faf9; --line:#c5cfca; --fg:#18211f; --muted:#56635f; --accent:#0d6b63; --accent-soft:#d3e7e3;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-han:"Noto Serif TC","Songti TC","PingFang TC",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#111716; --surface:#18201e; --line:#2f3d39; --fg:#e6eeeb; --muted:#9aaaa5; --accent:#5fc9bc; --accent-soft:#1d3a36; color-scheme:dark }
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:40px}
+main{max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:24px}
+h1{margin:0; font-size:28px; font-weight:600; letter-spacing:-0.01em; text-wrap:balance}
+h1 .han{font-family:var(--f-han); color:var(--accent); margin-left:10px}
+p{margin:0; color:var(--muted); max-width:62ch}
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px}
+a.card{display:flex; flex-direction:column; gap:8px; padding:18px 20px; border:1px solid var(--line); border-radius:10px;
+  background:var(--surface); color:inherit; text-decoration:none}
+a.card:hover{border-color:var(--accent)}
+a.card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.card h2{margin:0; font-size:18px; font-weight:600}
+.card h2 .han{font-family:var(--f-han); color:var(--muted); font-weight:500; margin-left:8px}
+.codes{font-family:var(--f-mono); font-size:13px; color:var(--accent); letter-spacing:0.04em}
+.go{margin-top:auto; font-weight:500; color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Five Shu Points<span class="han">五輸穴</span></h1>
+  <p>Rotatable 3D models of the right arm and leg showing the five shu points of all twelve channels. Each point is coloured by its element; click one for its name, shu type and location.</p>
+  <div class="cards">
+    <a class="card" href="arm.html">
+      <h2>Arm<span class="han">手</span></h2>
+      <span class="codes">LU · LI · HT · PC · SI · TB</span>
+      <p>The six hand channels, from the fingertips to the elbow.</p>
+      <span class="go">Open the arm →</span>
+    </a>
+    <a class="card" href="leg.html">
+      <h2>Leg<span class="han">足</span></h2>
+      <span class="codes">ST · SP · BL · KI · GB · LR</span>
+      <p>The six foot channels, from the toes to the knee.</p>
+      <span class="go">Open the leg →</span>
+    </a>
+  </div>
+  <p>Schematic models for study. Point positions follow standard textbook descriptions but are approximate on these simplified limbs.</p>
+</main>
+</body>
+</html>
